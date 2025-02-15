@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: "/loading",
       routes: {
         "/loading": (context) => LoadingScreen(),
-        // "/home": (context) => HomeScreen()
+        "/home": (context) => HomeScreen()
       },
     );
   }
