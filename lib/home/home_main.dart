@@ -11,12 +11,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   Map data = {};
+  dynamic infLocation;
+
+  void changeLocation(newValue){
+    setState(() {
+      infLocation = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
-    Location infLocation = data["first_location"];
+    if (!data.isNotEmpty){
+      data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
+      infLocation = data["first_location"];
+    }
+    
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -26,7 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pushNamed(context, "/choose_location", arguments: {
+                    "current_location": changeLocation
+                  });
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black
                 ),
@@ -37,9 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )
                 ),
-              SizedBox(
-              height: 30,
-              ),
+              SizedBox(height: 30),
               Text(
                 infLocation.location,
                 style: TextStyle(

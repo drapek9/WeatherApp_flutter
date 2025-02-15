@@ -11,7 +11,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   void loadInformation() async {
-    Location startLocation = Location(location: "London");
+    Location startLocation = Location(location: "San Francisco");
     await startLocation.getData();
     // await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacementNamed(context, "/home", arguments: {

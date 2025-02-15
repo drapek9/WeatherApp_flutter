@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/loading/loading_main.dart';
 import 'package:weather_app/home/home_main.dart';
+import 'package:weather_app/location/location_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,8 @@ class _MyAppState extends State<MyApp> {
       initialRoute: "/loading",
       routes: {
         "/loading": (context) => LoadingScreen(),
-        "/home": (context) => HomeScreen()
+        "/home": (context) => HomeScreen(),
+        "/choose_location": (context) => LocationScreenChooser()
       },
     );
   }
