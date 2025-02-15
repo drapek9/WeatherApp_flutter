@@ -12,6 +12,8 @@ class Location {
     int uvIndex = 0;
     String pathImage = "";
     String statusName = "";
+    int isDay = 1;
+    String lastUpdate = "";
 
     Future<bool> getData() async {
         Response data = await get(Uri.parse("http://api.weatherapi.com/v1/current.json?key=fe26cfcaf9d04f55896112751251502&q=$location&aqi=no"));
@@ -24,6 +26,8 @@ class Location {
             uvIndex = (dataBody["uv"]*10).round();
             pathImage = dataBody["condition"]["icon"];
             statusName = dataBody["condition"]["text"];
+            isDay = dataBody["is_day"];
+            lastUpdate = dataBody["last_updated"];
             return true;
         }
         return false;

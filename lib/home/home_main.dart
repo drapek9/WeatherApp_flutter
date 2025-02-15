@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/data/data_main.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,15 +26,32 @@ class _HomeScreenState extends State<HomeScreen> {
       data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
       infLocation = data["first_location"];
     }
-    
+
+    Color textColor = infLocation.isDay == 1 ? Colors.black : Colors.white;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: infLocation.isDay == 1 ? Colors.white : const Color.fromARGB(255, 10, 51, 123),
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.only(top: 50),
+          margin: EdgeInsets.only(top: 10),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  margin: EdgeInsets.only(right: 30),
+                  child: Text(
+                    "Last update: ${DateFormat("HH:mm:ss dd.MM.yyyy").format(DateTime.parse(infLocation.lastUpdate))}",
+                    style: TextStyle(
+                      fontSize: 10
+                    ),
+                    
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
               ElevatedButton(
                 onPressed: (){
                   Navigator.pushNamed(context, "/choose_location", arguments: {
@@ -55,14 +73,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 infLocation.location,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 20
+                  fontSize: 20,
+                  color: textColor
                 ),
                 ),
               SizedBox(
                 height: 15,
               ),
               Image.network("https:${infLocation.pathImage}"),
-              Text(infLocation.statusName),
+              Text(
+                infLocation.statusName,
+                style: TextStyle(
+                  color: textColor
+                ),),
               SizedBox(
                 height: 30,
               ),
@@ -73,13 +96,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     "${infLocation.temperature} °C",
                     style: TextStyle(
                       fontSize: 50,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      color: textColor
                     ),
                     ),
                   Text(
                     "${infLocation.feelTemperature} °C",
                     style: TextStyle(
-                      fontSize: 20
+                      fontSize: 20,
+                      color: textColor
                     ),
                   ),
                   
@@ -91,10 +116,27 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  BottomInf(top_inf: "${infLocation.humidity} %", bottom_inf: "Humidity"),
-                  BottomInf(top_inf: "${infLocation.windSpeed} km/h", bottom_inf: "Wind speed"),
-                  BottomInf(top_inf: "${infLocation.uvIndex} UV", bottom_inf: "UV index"),
+                  BottomInf(topInf: "${infLocation.humidity} %", bottomInf: "Humidity", textColor: textColor,),
+                  BottomInf(topInf: "${infLocation.windSpeed} km/h", bottomInf: "Wind speed", textColor: textColor),
+                  BottomInf(topInf: "${infLocation.uvIndex} UV", bottomInf: "UV index", textColor: textColor),
                 ],
+              ),
+              Expanded(
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black
+                    ),
+                    onPressed: (){
+                      Navigator.pushNamed(context, "/detail");
+                    },
+                    child: Text(
+                      "Detail information",
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
+                    )),
+                ),
               ),
               Expanded(
                 child: Center(
@@ -137,10 +179,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class BottomInf extends StatefulWidget {
   // const BottomInf({super.key});
-  final String top_inf;
-  final String bottom_inf;
+  final String topInf;
+  final String bottomInf;
+  final Color textColor;
 
-  BottomInf({required this.top_inf, required this.bottom_inf});
+  BottomInf({required this.topInf, required this.bottomInf, required this.textColor});
 
   @override
   State<BottomInf> createState() => _BottomInfState();
@@ -152,16 +195,18 @@ class _BottomInfState extends State<BottomInf> {
     return Column(
       children: [
         Text(
-          widget.top_inf,
+          widget.topInf,
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+            color: widget.textColor
           ),
         ),
         Text(
-          widget.bottom_inf,
+          widget.bottomInf,
           style: TextStyle(
-            fontSize: 13
+            fontSize: 13,
+            color: widget.textColor
           ),
         )
       ],

@@ -46,7 +46,6 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            
             children: [
               SizedBox(
                 width: 300,
