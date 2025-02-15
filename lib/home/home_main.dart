@@ -95,6 +95,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   BottomInf(top_inf: "${infLocation.windSpeed} km/h", bottom_inf: "Wind speed"),
                   BottomInf(top_inf: "${infLocation.uvIndex} UV", bottom_inf: "UV index"),
                 ],
+              ),
+              Expanded(
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 235, 235, 235)
+                    ),
+                    onPressed: () async{
+                      Location newLocation = Location(location: infLocation.location);
+                      await newLocation.getData();
+                      setState(() {
+                        infLocation = newLocation;
+                      });
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Refresh",
+                          style: TextStyle(
+                            color: Colors.black
+                          ),
+                          ),
+                        SizedBox(width: 8,),
+                        Icon(
+                          Icons.refresh,
+                          color: Colors.black
+                          )
+                      ],
+                    )),
+                ),
               )
             ],
           ),
