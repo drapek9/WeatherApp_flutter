@@ -45,13 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    inf_location.temperature.toString() + "°C",
+                    inf_location.temperature.toString() + " °C",
                     style: TextStyle(
-                      fontSize: 50
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold
                     ),
                     ),
                   Text(
-                    inf_location.feel_temperature.toString() + "°C",
+                    inf_location.feel_temperature.toString() + " °C",
                     style: TextStyle(
                       fontSize: 20
                     ),
@@ -60,26 +61,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               SizedBox(
-                height: 30,
+                height: 40,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    inf_location.humidity.toString() + " %"
-                  ),
-                  Text(
-                    inf_location.wind_speed.toString() + " m/s"
-                  ),
-                  Text(
-                    inf_location.uv_index.toString() + " UV"
-                  )
+                  BottomInf(top_inf: inf_location.humidity.toString() + " %", bottom_inf: "Humidity"),
+                  BottomInf(top_inf: inf_location.wind_speed.toString() + " km/h", bottom_inf: "Wind speed"),
+                  BottomInf(top_inf: inf_location.uv_index.toString() + " UV", bottom_inf: "UV index"),
                 ],
               )
             ],
           ),
         )
         ),
+    );
+  }
+}
+
+class BottomInf extends StatefulWidget {
+  // const BottomInf({super.key});
+  final String top_inf;
+  final String bottom_inf;
+
+  BottomInf({required this.top_inf, required this.bottom_inf});
+
+  @override
+  State<BottomInf> createState() => _BottomInfState();
+}
+
+class _BottomInfState extends State<BottomInf> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          widget.top_inf,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+        Text(
+          widget.bottom_inf,
+          style: TextStyle(
+            fontSize: 13
+          ),
+        )
+      ],
     );
   }
 }
