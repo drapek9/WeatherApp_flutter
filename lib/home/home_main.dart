@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
     data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
-    Location inf_location = data["first_location"];
+    Location infLocation = data["first_location"];
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -37,22 +37,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )
                 ),
-                
               SizedBox(
-                height: 50,
+              height: 30,
+              ),
+              Text(
+                infLocation.location,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20
+                ),
+                ),
+              SizedBox(
+                height: 15,
+              ),
+              Image.network("https:${infLocation.pathImage}"),
+              Text(infLocation.statusName),
+              SizedBox(
+                height: 30,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    inf_location.temperature.toString() + " °C",
+                    "${infLocation.temperature} °C",
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold
                     ),
                     ),
                   Text(
-                    inf_location.feel_temperature.toString() + " °C",
+                    "${infLocation.feelTemperature} °C",
                     style: TextStyle(
                       fontSize: 20
                     ),
@@ -66,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  BottomInf(top_inf: inf_location.humidity.toString() + " %", bottom_inf: "Humidity"),
-                  BottomInf(top_inf: inf_location.wind_speed.toString() + " km/h", bottom_inf: "Wind speed"),
-                  BottomInf(top_inf: inf_location.uv_index.toString() + " UV", bottom_inf: "UV index"),
+                  BottomInf(top_inf: "${infLocation.humidity} %", bottom_inf: "Humidity"),
+                  BottomInf(top_inf: "${infLocation.windSpeed} km/h", bottom_inf: "Wind speed"),
+                  BottomInf(top_inf: "${infLocation.uvIndex} UV", bottom_inf: "UV index"),
                 ],
               )
             ],
