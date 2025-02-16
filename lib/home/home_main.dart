@@ -128,7 +128,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: Colors.black
                     ),
                     onPressed: (){
-                      Navigator.pushNamed(context, "/detail");
+                      Navigator.pushNamed(context, "/detail", arguments: {
+                        "location": infLocation.location
+                      });
                     },
                     child: Text(
                       "Detail information",
