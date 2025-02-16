@@ -129,7 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     onPressed: (){
                       Navigator.pushNamed(context, "/detail", arguments: {
-                        "location": infLocation.location
+                        "location": infLocation.location,
+                        "is_day": infLocation.isDay
                       });
                     },
                     child: Text(

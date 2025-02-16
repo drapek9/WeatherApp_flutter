@@ -6,6 +6,8 @@ class Location {
     Location({required this.location});
 
     double temperature = 0;
+    double minTemperature = 0;
+    double maxTemperature = 0;
     double feelTemperature = 0;
     int humidity = 0;
     double windSpeed = 0;
@@ -14,6 +16,7 @@ class Location {
     String statusName = "";
     int isDay = 1;
     String lastUpdate = "";
+    DateTime dateInf = DateTime(2024);
 
     Future<bool> getData() async {
         Response data = await get(Uri.parse("http://api.weatherapi.com/v1/current.json?key=fe26cfcaf9d04f55896112751251502&q=$location&aqi=no"));
@@ -32,5 +35,17 @@ class Location {
         }
         return false;
         
+    }
+
+    void setData(theData) {
+        maxTemperature = theData["day"]["maxtemp_c"];
+        minTemperature = theData["day"]["mintemp_c"];
+        temperature = theData["day"]["avgtemp_c"];
+        // feelTemperature = theData["feelslike_c"];
+        humidity = theData["day"]["avghumidity"];
+        uvIndex = (theData["day"]["uv"]*10).round();
+        pathImage = theData["day"]["condition"]["icon"];
+        statusName = theData["day"]["condition"]["text"];
+        dateInf = DateTime.parse(theData["date"]);
     }
 }

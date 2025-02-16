@@ -1,8 +1,10 @@
 import 'dart:convert';
-
+import 'package:weather_app/data/data_main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class DetailWeatherLocation extends StatefulWidget {
   @override
@@ -15,11 +17,17 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
 
   Map data = {};
   bool loaded = false;
-  Map daysData = {};
+  List allDetailLocation = [];
+  int isDay = 1;
 
-  void loadDaysData({days=3}) async{
+  void loadDaysData({days=7}) async{
     Response response = await get(Uri.parse("http://api.weatherapi.com/v1/forecast.json?key=fe26cfcaf9d04f55896112751251502&q=$location&days=$days&aqi=no&alerts=no"));
-    daysData = jsonDecode(response.body);
+    Map daysData = jsonDecode(response.body);
+    daysData["forecast"]["forecastday"].forEach((one) {
+      Location newLocation = Location(location: location);
+      newLocation.setData(one);
+      allDetailLocation.add(newLocation);
+    });
     setState(() {
       loaded = true;
     });
@@ -27,7 +35,6 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
   @override
   void initState() {
     super.initState();
-    // loadDaysData();
   }
 
   @override
@@ -35,25 +42,65 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
     if (!data.isNotEmpty){
       data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
       location = data["location"];
+      isDay = data["is_day"];
       loadDaysData();
     }
+
+    initializeDateFormatting("cs", null);
     
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDay == 1 ? Colors.white : const Color.fromARGB(255, 10, 51, 123),
       body: !loaded ? SpinKitCircle(
         color: Colors.black,
         size: 25,
-      ) : ListView.builder(
-        itemCount: 7,
-        itemBuilder: (context, index) {
-          return Card(
-            child: Text(
-              "Hello"
+      ) : Padding(
+        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+        child: ListView.builder(
+          itemCount: allDetailLocation.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: SizedBox(
+                height: 75,
+                child: Card(
+                  color: const Color.fromARGB(39, 0, 0, 0),
+                  child: Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                        "${allDetailLocation[index].dateInf.month}/${allDetailLocation[index].dateInf.day}"
+                        ),
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            [0, 1].contains(index) ? index == 0 ? "Today" : "Tomorrow" : DateFormat("EEE", "en").format(allDetailLocation[index].dateInf)
+                            )
+                          ),
+                        Image.network(
+                          "https:${allDetailLocation[index].pathImage}",
+                          height: 40,
+                          ),
+                        SizedBox(
+                          width: 80,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              "${allDetailLocation[index].minTemperature}°/${allDetailLocation[index].maxTemperature}°"
+                            ),
+                          ),
+                        )
+                        ]
+                    ),
+                  ),
+                  ),
               ),
             );
-        },
-        ),
+          },
+          ),
+      ),
     );
   }
 }
