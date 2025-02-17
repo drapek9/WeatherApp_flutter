@@ -43,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     "Last update: ${DateFormat("HH:mm:ss dd.MM.yyyy").format(DateTime.parse(infLocation.lastUpdate))}",
                     style: TextStyle(
-                      fontSize: 10
+                      fontSize: 10,
+                      color: textColor
                     ),
                     
                   ),

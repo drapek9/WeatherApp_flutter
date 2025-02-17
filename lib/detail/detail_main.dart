@@ -46,13 +46,21 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
       loadDaysData();
     }
 
+    Color contentColor = isDay == 1 ? Colors.black : Colors.white;
+
     initializeDateFormatting("cs", null);
     
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: isDay == 1 ? Colors.white : const Color.fromARGB(255, 10, 51, 123),
+        leading: BackButton(
+          color: contentColor,
+        ),
+      ),
       backgroundColor: isDay == 1 ? Colors.white : const Color.fromARGB(255, 10, 51, 123),
       body: !loaded ? SpinKitCircle(
-        color: Colors.black,
+        color: contentColor,
         size: 25,
       ) : Padding(
         padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
@@ -64,19 +72,25 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
               child: SizedBox(
                 height: 75,
                 child: Card(
-                  color: const Color.fromARGB(39, 0, 0, 0),
+                  color: const Color.fromARGB(0, 0, 0, 0),
                   child: Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                        "${allDetailLocation[index].dateInf.month}/${allDetailLocation[index].dateInf.day}"
+                        "${allDetailLocation[index].dateInf.month}/${allDetailLocation[index].dateInf.day}",
+                        style: TextStyle(
+                            color: contentColor
+                          ),
                         ),
                         SizedBox(
                           width: 80,
                           child: Text(
-                            [0, 1].contains(index) ? index == 0 ? "Today" : "Tomorrow" : DateFormat("EEE", "en").format(allDetailLocation[index].dateInf)
+                            [0, 1].contains(index) ? index == 0 ? "Today" : "Tomorrow" : DateFormat("EEE", "en").format(allDetailLocation[index].dateInf),
+                            style: TextStyle(
+                              color: contentColor
+                            ),
                             )
                           ),
                         Image.network(
@@ -88,7 +102,10 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              "${allDetailLocation[index].minTemperature}°/${allDetailLocation[index].maxTemperature}°"
+                              "${allDetailLocation[index].minTemperature}°/${allDetailLocation[index].maxTemperature}°",
+                              style: TextStyle(
+                                color: contentColor
+                              ),
                             ),
                           ),
                         )
