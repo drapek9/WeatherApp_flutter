@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/data/data_main.dart';
+import 'package:weather_app/structure_widgets/structure_widgets_main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -60,7 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black
+                  // backgroundColor: const Color.fromARGB(120, 255, 255, 255)
+                  backgroundColor: const Color.fromARGB(0, 255, 255, 255)
                 ),
                 child: Text(
                   "Location",
@@ -126,7 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black
+                      // backgroundColor: const Color.fromARGB(120, 255, 255, 255)
+                      backgroundColor: const Color.fromARGB(0, 255, 255, 255)
                     ),
                     onPressed: (){
                       Navigator.pushNamed(context, "/detail", arguments: {
@@ -177,43 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         )
         ),
-    );
-  }
-}
-
-class BottomInf extends StatefulWidget {
-  // const BottomInf({super.key});
-  final String topInf;
-  final String bottomInf;
-  final Color textColor;
-
-  BottomInf({required this.topInf, required this.bottomInf, required this.textColor});
-
-  @override
-  State<BottomInf> createState() => _BottomInfState();
-}
-
-class _BottomInfState extends State<BottomInf> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          widget.topInf,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: widget.textColor
-          ),
-        ),
-        Text(
-          widget.bottomInf,
-          style: TextStyle(
-            fontSize: 13,
-            color: widget.textColor
-          ),
-        )
-      ],
     );
   }
 }

@@ -72,7 +72,7 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
               child: SizedBox(
                 height: 75,
                 child: Card(
-                  color: const Color.fromARGB(0, 0, 0, 0),
+                  color: isDay == 1 ? const Color.fromARGB(255, 232, 232, 232) : const Color.fromARGB(0, 255, 255, 255),
                   child: InkWell(
                     onTap: (){
                       Navigator.pushNamed(context, "/detail_day", arguments: {

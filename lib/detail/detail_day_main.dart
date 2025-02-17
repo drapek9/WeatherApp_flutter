@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
+import 'package:weather_app/structure_widgets/structure_widgets_main.dart';
 
 class DetailDay extends StatelessWidget {
   // const DetailDay({super.key});
@@ -23,52 +24,154 @@ class DetailDay extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Text(DateFormat("dd.MM.yyyy").format(informationDay.dateInf)),
-            Text("${informationDay.minTemperature}°/${informationDay.maxTemperature}°"),
+            Text(
+              DateFormat("dd.MM.yyyy").format(informationDay.dateInf),
+              style: TextStyle(
+                fontSize: 18,
+                color: colorText
+              )),
+            Image.network("https:${informationDay.pathImage}"),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${informationDay.minTemperature}°/${informationDay.maxTemperature}°",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: colorText
+              ),
+              ),
+            SizedBox(
+              height: 40,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      informationDay.sunrise,
-                      style: TextStyle(
-                        color: colorText
-                      )),
-                    Text(
-                      "Sunrise"
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      informationDay.sunset,
-                      style: TextStyle(
-                        color: colorText
-                      )
-                      ),
-                    Text(
-                      "Sunset"
-                    )
-                  ],
-                )
+                BottomInf(topInf: informationDay.sunrise, bottomInf: "Sunrise", textColor: colorText),
+                BottomInf(topInf: informationDay.sunset, bottomInf: "Sunset", textColor: colorText)
               ],
             ),
             SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 12,
-                itemBuilder: (context, index){
-                  return Card(
-                    child: Text("dayyyyyy"),
-                  );
-                }),
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Center(child: BottomInf(topInf: "${informationDay.humidity} %", bottomInf: "Avg. humidity", textColor: colorText))
+                  ),
+                Expanded(
+                  child: Center(child: BottomInf(topInf: "${informationDay.maxWindKph}", bottomInf: "Max wind", textColor: colorText))
+                  ),
+                Expanded(
+                  child: Center(child: BottomInf(topInf: "${informationDay.uvIndex}", bottomInf: "UV", textColor: colorText))
+                  ),
+              ],
+            ),
+            Expanded(
+              child: Center(
+                child: SizedBox(
+                  height: 120,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Card(
+                      // color: const Color.fromARGB(172, 0, 0, 0),
+                      color: const Color.fromARGB(0, 255, 255, 255),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: informationDay.hoursInf.length,
+                          itemBuilder: (context, index){
+                            Map theHour = informationDay.hoursInf[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 2.5),
+                              child: HourContent(theHour: theHour)
+                            );
+                          }),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
         ),
       ),
     );
+  }
+}
+
+class HourContent extends StatelessWidget {
+  // const HourContent({super.key});
+
+  Map theHour = {};
+
+  HourContent({required this.theHour});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+              width: 90,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      theHour["time"].split(" ")[1],
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.white
+                      ),
+                      ),
+                    Image.network(
+                      height: 35,
+                      "https:${theHour["condition"]["icon"]}"
+                      ),
+                    Text(
+                      "${theHour["temp_c"]}°",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+  }
+}
+
+class SunInf extends StatelessWidget {
+  // const SunInf({super.key});
+
+  String infTime = "";
+  String description = "";
+  Color colorText = Colors.red;
+
+  SunInf({required this.infTime, required this.description, required this.colorText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: [
+          Text(
+            infTime,
+            style: TextStyle(
+              color: colorText,
+              fontWeight: FontWeight.bold,
+              fontSize: 16
+            )
+            ),
+          Text(
+            description,
+            style: TextStyle(
+              color: colorText
+            ),
+          )
+        ],
+      );
   }
 }

@@ -20,6 +20,7 @@ class Location {
     List hoursInf = [];
     String sunrise = "";
     String sunset = "";
+    double maxWindKph = 0;
 
     Future<bool> getData() async {
         Response data = await get(Uri.parse("http://api.weatherapi.com/v1/current.json?key=fe26cfcaf9d04f55896112751251502&q=$location&aqi=no"));
@@ -53,5 +54,6 @@ class Location {
         sunset = theData["astro"]["sunset"];
         sunrise = theData["astro"]["sunrise"];
         dateInf = DateTime.parse(theData["date"]);
+        maxWindKph = theData["day"]["maxwind_kph"];
     }
 }
