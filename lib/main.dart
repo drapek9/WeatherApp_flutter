@@ -3,6 +3,7 @@ import 'package:weather_app/loading/loading_main.dart';
 import 'package:weather_app/home/home_main.dart';
 import 'package:weather_app/location/location_screen.dart';
 import 'package:weather_app/detail/detail_main.dart';
+import 'package:weather_app/detail/detail_day_main.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,8 @@ class _MyAppState extends State<MyApp> {
         "/loading": (context) => LoadingScreen(),
         "/home": (context) => HomeScreen(),
         "/choose_location": (context) => LocationScreenChooser(),
-        "/detail": (context) => DetailWeatherLocation()
+        "/detail": (context) => DetailWeatherLocation(),
+        "/detail_day": (context) => DetailDay()
       },
     );
   }

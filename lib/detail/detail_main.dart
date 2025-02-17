@@ -73,43 +73,51 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
                 height: 75,
                 child: Card(
                   color: const Color.fromARGB(0, 0, 0, 0),
-                  child: Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                        "${allDetailLocation[index].dateInf.month}/${allDetailLocation[index].dateInf.day}",
-                        style: TextStyle(
-                            color: contentColor
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80,
-                          child: Text(
-                            [0, 1].contains(index) ? index == 0 ? "Today" : "Tomorrow" : DateFormat("EEE", "en").format(allDetailLocation[index].dateInf),
-                            style: TextStyle(
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context, "/detail_day", arguments: {
+                        "is_day": isDay,
+                        "data": allDetailLocation[index]
+                      });
+                    },
+                    child: Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                          DateFormat("MM/dd").format(allDetailLocation[index].dateInf),
+                          style: TextStyle(
                               color: contentColor
                             ),
-                            )
                           ),
-                        Image.network(
-                          "https:${allDetailLocation[index].pathImage}",
-                          height: 40,
-                          ),
-                        SizedBox(
-                          width: 80,
-                          child: Align(
-                            alignment: Alignment.centerRight,
+                          SizedBox(
+                            width: 80,
                             child: Text(
-                              "${allDetailLocation[index].minTemperature}°/${allDetailLocation[index].maxTemperature}°",
+                              [0, 1].contains(index) ? index == 0 ? "Today" : "Tomorrow" : DateFormat("EEE", "en").format(allDetailLocation[index].dateInf),
                               style: TextStyle(
                                 color: contentColor
                               ),
+                              )
                             ),
-                          ),
-                        )
-                        ]
+                          Image.network(
+                            "https:${allDetailLocation[index].pathImage}",
+                            height: 40,
+                            ),
+                          SizedBox(
+                            width: 80,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                "${allDetailLocation[index].minTemperature}°/${allDetailLocation[index].maxTemperature}°",
+                                style: TextStyle(
+                                  color: contentColor
+                                ),
+                              ),
+                            ),
+                          )
+                          ]
+                      ),
                     ),
                   ),
                   ),

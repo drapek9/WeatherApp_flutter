@@ -17,6 +17,9 @@ class Location {
     int isDay = 1;
     String lastUpdate = "";
     DateTime dateInf = DateTime(2024);
+    List hoursInf = [];
+    String sunrise = "";
+    String sunset = "";
 
     Future<bool> getData() async {
         Response data = await get(Uri.parse("http://api.weatherapi.com/v1/current.json?key=fe26cfcaf9d04f55896112751251502&q=$location&aqi=no"));
@@ -46,6 +49,9 @@ class Location {
         uvIndex = (theData["day"]["uv"]*10).round();
         pathImage = theData["day"]["condition"]["icon"];
         statusName = theData["day"]["condition"]["text"];
+        hoursInf = theData["hour"];
+        sunset = theData["astro"]["sunset"];
+        sunrise = theData["astro"]["sunrise"];
         dateInf = DateTime.parse(theData["date"]);
     }
 }
