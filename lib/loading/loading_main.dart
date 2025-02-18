@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:weather_app/data/data_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -10,8 +11,11 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  void loadInformation() async {
-    Location startLocation = Location(location: "San Francisco");
+  Future<void> loadInformation() async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    String? data = prefer.getString("location") ?? "New York";
+
+    Location startLocation = Location(location: data);
     await startLocation.getData();
     // await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacementNamed(context, "/home", arguments: {

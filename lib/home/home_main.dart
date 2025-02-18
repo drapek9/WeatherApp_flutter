@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/data/data_main.dart';
 import 'package:weather_app/structure_widgets/structure_widgets_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,11 +15,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Map data = {};
   dynamic infLocation;
+  String hello = "ahoj";
 
-  void changeLocation(newValue){
+  Future<void> setShared () async{
+    SharedPreferences theShared = await SharedPreferences.getInstance();
+    await theShared.setString("location", infLocation.location);
+  }
+
+  void changeLocation(newValue) async {
     setState(() {
       infLocation = newValue;
     });
+    
+    await setShared();
   }
 
   @override

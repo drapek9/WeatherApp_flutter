@@ -5,6 +5,17 @@ allprojects {
     }
 }
 
+buildscript {
+    repositories {
+        google()  // Repozitář pro Google knihovny
+        mavenCentral()  // Repozitář pro Maven
+    }
+    dependencies {
+        // Přidej tuto řádku pro aktualizovanou verzi AGP
+        classpath 'com.android.tools.build:gradle:8.2.1'  // Tato verze je kompatibilní s Java 21
+    }
+}
+
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
