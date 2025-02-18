@@ -30,6 +30,18 @@ class DetailDay extends StatelessWidget {
                 fontSize: 18,
                 color: colorText
               )),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              informationDay.location,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                color: colorText
+              ),
+            ),
+            SizedBox(height: 30,),
             Image.network("https:${informationDay.pathImage}"),
             SizedBox(
               height: 10,
@@ -48,8 +60,8 @@ class DetailDay extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                BottomInf(topInf: informationDay.sunrise, bottomInf: "Sunrise", textColor: colorText),
-                BottomInf(topInf: informationDay.sunset, bottomInf: "Sunset", textColor: colorText)
+                BottomInf(topInf: DateFormat("HH:mm").format(informationDay.sunrise) , bottomInf: "Sunrise", textColor: colorText),
+                BottomInf(topInf: DateFormat("HH:mm").format(informationDay.sunset), bottomInf: "Sunset", textColor: colorText)
               ],
             ),
             SizedBox(
@@ -62,10 +74,10 @@ class DetailDay extends StatelessWidget {
                   child: Center(child: BottomInf(topInf: "${informationDay.humidity} %", bottomInf: "Avg. humidity", textColor: colorText))
                   ),
                 Expanded(
-                  child: Center(child: BottomInf(topInf: "${informationDay.maxWindKph}", bottomInf: "Max wind", textColor: colorText))
+                  child: Center(child: BottomInf(topInf: "${informationDay.maxWindKph} km/h", bottomInf: "Max wind", textColor: colorText))
                   ),
                 Expanded(
-                  child: Center(child: BottomInf(topInf: "${informationDay.uvIndex}", bottomInf: "UV", textColor: colorText))
+                  child: Center(child: BottomInf(topInf: "${informationDay.uvIndex} UV", bottomInf: "UV index", textColor: colorText))
                   ),
               ],
             ),
@@ -77,7 +89,7 @@ class DetailDay extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Card(
                       // color: const Color.fromARGB(172, 0, 0, 0),
-                      color: const Color.fromARGB(0, 255, 255, 255),
+                      color: isDay == 1 ? const Color.fromARGB(255, 232, 232, 232) : const Color.fromARGB(0, 255, 255, 255),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                         child: ListView.builder(
@@ -87,7 +99,7 @@ class DetailDay extends StatelessWidget {
                             Map theHour = informationDay.hoursInf[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 2.5),
-                              child: HourContent(theHour: theHour)
+                              child: HourContent(theHour: theHour, colorText: colorText,)
                             );
                           }),
                       ),
@@ -107,8 +119,9 @@ class HourContent extends StatelessWidget {
   // const HourContent({super.key});
 
   Map theHour = {};
+  Color colorText = Colors.black;
 
-  HourContent({required this.theHour});
+  HourContent({required this.theHour, required this.colorText});
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +136,7 @@ class HourContent extends StatelessWidget {
                       theHour["time"].split(" ")[1],
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.white
+                        color: colorText
                       ),
                       ),
                     Image.network(
@@ -134,7 +147,7 @@ class HourContent extends StatelessWidget {
                       "${theHour["temp_c"]}°",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white
+                        color: colorText
                       ),
                     ),
                   ],

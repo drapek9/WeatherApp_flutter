@@ -61,8 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  // backgroundColor: const Color.fromARGB(120, 255, 255, 255)
-                  backgroundColor: const Color.fromARGB(0, 255, 255, 255)
+                  backgroundColor: infLocation.isDay == 1 ? Colors.black : const Color.fromARGB(0, 255, 255, 255)
                 ),
                 child: Text(
                   "Location",
@@ -128,8 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      // backgroundColor: const Color.fromARGB(120, 255, 255, 255)
-                      backgroundColor: const Color.fromARGB(0, 255, 255, 255)
+                      backgroundColor: infLocation.isDay == 1 ? Colors.black : const Color.fromARGB(0, 255, 255, 255)
                     ),
                     onPressed: (){
                       Navigator.pushNamed(context, "/detail", arguments: {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 class Location {
     String location;
 
@@ -18,8 +19,8 @@ class Location {
     String lastUpdate = "";
     DateTime dateInf = DateTime(2024);
     List hoursInf = [];
-    String sunrise = "";
-    String sunset = "";
+    DateTime sunrise = DateTime(2024);
+    DateTime sunset = DateTime(2024);
     double maxWindKph = 0;
 
     Future<bool> getData() async {
@@ -51,8 +52,8 @@ class Location {
         pathImage = theData["day"]["condition"]["icon"];
         statusName = theData["day"]["condition"]["text"];
         hoursInf = theData["hour"];
-        sunset = theData["astro"]["sunset"];
-        sunrise = theData["astro"]["sunrise"];
+        sunset = DateFormat("hh:mm a").parse(theData["astro"]["sunset"]);
+        sunrise = DateFormat("hh:mm a").parse(theData["astro"]["sunrise"]);
         dateInf = DateTime.parse(theData["date"]);
         maxWindKph = theData["day"]["maxwind_kph"];
     }
