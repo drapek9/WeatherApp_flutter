@@ -13,7 +13,8 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
   bool optionLocation = false;
   Map data = {};
   dynamic newLocation;
-  String lastLocationText ="";
+  String lastLocationText = "";
+  int isDay = 1;
   
   @override
   Widget build(BuildContext context) {
@@ -28,14 +29,18 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
       
       
     });
-    
     data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
     Function(Location) theLocation = data["current_location"];
+    if (!data.isNotEmpty){
+      isDay = data["old_information"].isDay;
+    }
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDay == 1 ? Colors.white : const Color.fromARGB(255, 10, 51, 123),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: isDay == 1 ? Colors.white : const Color.fromARGB(255, 10, 51, 123),
         leading: BackButton(
+          color: isDay == 1 ? Colors.black : Colors.white,
           onPressed: (){
             Navigator.pop(context, "/home");
           },
@@ -99,13 +104,12 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 21, 152, 29)
                 ),
-                onPressed: (){
-                  theLocation(newLocation);
+                onPressed: () async{
+                  int dayReturn = await theLocation(newLocation);
                   setState(() {
-                    setState(() {
                       optionLocation = false;
+                      isDay = dayReturn;
                     });
-                  });
                 },
                 child: Text(
                   "Select location",

@@ -41,7 +41,7 @@ class DetailDay extends StatelessWidget {
                 color: colorText
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(height: 15,),
             Image.network("https:${informationDay.pathImage}"),
             SizedBox(
               height: 10,

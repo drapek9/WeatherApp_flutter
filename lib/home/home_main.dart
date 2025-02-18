@@ -22,12 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
     await theShared.setString("location", infLocation.location);
   }
 
-  void changeLocation(newValue) async {
+  Future<int> changeLocation(newValue) async {
     setState(() {
       infLocation = newValue;
     });
     
     await setShared();
+    return infLocation.isDay;
   }
 
   @override
@@ -66,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 onPressed: (){
                   Navigator.pushNamed(context, "/choose_location", arguments: {
-                    "current_location": changeLocation
+                    "current_location": changeLocation,
+                    "old_information": infLocation
                   });
                 },
                 style: ElevatedButton.styleFrom(
