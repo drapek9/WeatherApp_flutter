@@ -16,11 +16,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
     String? data = prefer.getString("location") ?? "New York";
 
     Location startLocation = Location(location: data);
-    await startLocation.getData();
-    // await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, "/home", arguments: {
-      "first_location": startLocation
-    });
+    bool response_success = await startLocation.getData();
+    if (!response_success){
+      Navigator.pushNamed(context, "/network_error", arguments: {
+        "back_path_name": "/loading"
+      });
+    } else {
+      Navigator.pushReplacementNamed(context, "/home", arguments: {
+        "first_location": startLocation
+      });
+    }
+    
   }
 
   @override

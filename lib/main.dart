@@ -4,6 +4,7 @@ import 'package:weather_app/home/home_main.dart';
 import 'package:weather_app/location/location_screen.dart';
 import 'package:weather_app/detail/detail_main.dart';
 import 'package:weather_app/detail/detail_day_main.dart';
+import 'package:weather_app/network_error/network_error_main.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,8 @@ class _MyAppState extends State<MyApp> {
         "/home": (context) => HomeScreen(),
         "/choose_location": (context) => LocationScreenChooser(),
         "/detail": (context) => DetailWeatherLocation(),
-        "/detail_day": (context) => DetailDay()
+        "/detail_day": (context) => DetailDay(),
+        "/network_error": (context) => NetworkError(),
       },
     );
   }

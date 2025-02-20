@@ -24,6 +24,11 @@ class Location {
     double maxWindKph = 0;
 
     Future<bool> getData() async {
+        try {
+          final Response response = await get(Uri.parse("https://www.google.com"));
+        } catch (e){
+          return false;
+        }
         Response data = await get(Uri.parse("http://api.weatherapi.com/v1/current.json?key=fe26cfcaf9d04f55896112751251502&q=$location&aqi=no"));
         if (!jsonDecode(data.body).keys.contains("error")){
             Map dataBody = jsonDecode(data.body)["current"];
