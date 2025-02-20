@@ -21,16 +21,24 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
   int isDay = 1;
 
   void loadDaysData({days=7}) async{
-    Response response = await get(Uri.parse("http://api.weatherapi.com/v1/forecast.json?key=fe26cfcaf9d04f55896112751251502&q=$location&days=$days&aqi=no&alerts=no"));
-    Map daysData = jsonDecode(response.body);
-    daysData["forecast"]["forecastday"].forEach((one) {
-      Location newLocation = Location(location: location);
-      newLocation.setData(one);
-      allDetailLocation.add(newLocation);
-    });
-    setState(() {
-      loaded = true;
-    });
+    try {
+      Response response = await get(Uri.parse("http://api.weatherapi.com/v1/forecast.json?key=fe26cfcaf9d04f55896112751251502&q=$location&days=$days&aqi=no&alerts=no"));
+      Map daysData = jsonDecode(response.body);
+      daysData["forecast"]["forecastday"].forEach((one) async {
+        Location newLocation = Location(location: location);
+        newLocation.setData(one);
+        allDetailLocation.add(newLocation);
+      });
+      setState(() {
+        loaded = true;
+      });
+    } catch (e){
+      Navigator.pushNamed(context, "/network_error", arguments: {
+          "back_path_name": "/loading",
+          "backup_function": loadDaysData
+        });
+    }
+    
   }
   @override
   void initState() {
@@ -43,7 +51,14 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
       data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
       location = data["location"];
       isDay = data["is_day"];
-      loadDaysData();
+      try {
+        loadDaysData();
+      } catch (e){
+        Navigator.pushNamed(context, "/network_error", arguments: {
+          "back_path_name": "/loading",
+          "backup_function": loadDaysData
+        });
+      }
     }
 
     Color contentColor = isDay == 1 ? Colors.black : Colors.white;

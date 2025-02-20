@@ -19,7 +19,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     bool response_success = await startLocation.getData();
     if (!response_success){
       Navigator.pushNamed(context, "/network_error", arguments: {
-        "back_path_name": "/loading"
+        "back_path_name": "/loading",
+        "backup_function": loadInformation
       });
     } else {
       Navigator.pushReplacementNamed(context, "/home", arguments: {

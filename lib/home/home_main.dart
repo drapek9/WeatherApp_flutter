@@ -15,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Map data = {};
   dynamic infLocation;
-  String hello = "ahoj";
 
   Future<void> setShared () async{
     SharedPreferences theShared = await SharedPreferences.getInstance();
@@ -29,6 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
     
     await setShared();
     return infLocation.isDay;
+  }
+
+  void doNothingYet () {
+
   }
 
   @override
@@ -161,11 +164,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: const Color.fromARGB(255, 235, 235, 235)
                     ),
                     onPressed: () async{
-                      Location newLocation = Location(location: infLocation.location);
-                      await newLocation.getData();
-                      setState(() {
-                        infLocation = newLocation;
-                      });
+                      try {
+                        print("ahoj 1");
+                        Location newLocation = Location(location: infLocation.location);
+                        print("ahoj 2");
+                        bool response_success = await newLocation.getData();
+                        if (!response_success){
+                          throw Exception();
+                        }
+                        print("ahoj 3");
+                        setState(() {
+                          infLocation = newLocation;
+                        });
+                      } catch (e){
+                        Navigator.pushNamed(context, "/network_error", arguments: {
+                          "back_path_name": "/loading",
+                          "backup_function": doNothingYet
+                        });
+                      }
+                      
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

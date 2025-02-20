@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart';
+import 'dart:async';
 
 class NetworkError extends StatefulWidget {
   const NetworkError({super.key});
@@ -11,19 +11,32 @@ class NetworkError extends StatefulWidget {
 
 class _NetworkErrorState extends State<NetworkError> {
   String errorText = "";
+  Timer? timer;
+  Function? backupFunction;
   void reloadButtonFunction() async{
       try {
         await get(Uri.parse("https://www.google.com"));
         Navigator.pop(context);
+        backupFunction!();
       } catch(e) {
         setState(() {
           errorText = "There is an error";
         });
-        Future.delayed(Duration(seconds: 3), (){
+
+        controlTimerBefore();
+        timer = Timer(Duration(seconds: 3), (){
           clearErrorText();
+          timer = null;
         });
       }
     }
+  
+  void controlTimerBefore(){
+    if (timer != null){
+      timer?.cancel();
+      timer = null;
+    }
+  }
 
   void clearErrorText() {
     setState(() {
@@ -35,11 +48,11 @@ class _NetworkErrorState extends State<NetworkError> {
   Widget build(BuildContext context) {
 
     Map data = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
-    String backPathName = data["back_path_name"];
+    // String backPathName = data["back_path_name"];
+    backupFunction = data["backup_function"];
 
     return SafeArea(
       child: Expanded(
-        
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -6,22 +6,22 @@ class Location {
 
     Location({required this.location});
 
-    double temperature = 0;
-    double minTemperature = 0;
-    double maxTemperature = 0;
-    double feelTemperature = 0;
-    int humidity = 0;
-    double windSpeed = 0;
-    int uvIndex = 0;
-    String pathImage = "";
-    String statusName = "";
-    int isDay = 1;
-    String lastUpdate = "";
-    DateTime dateInf = DateTime(2024);
+    double? temperature;
+    double? minTemperature;
+    double? maxTemperature;
+    double? feelTemperature;
+    int? humidity;
+    double? windSpeed;
+    int? uvIndex;
+    String? pathImage;
+    String? statusName;
+    int? isDay;
+    String? lastUpdate;
+    DateTime? dateInf;
     List hoursInf = [];
-    DateTime sunrise = DateTime(2024);
-    DateTime sunset = DateTime(2024);
-    double maxWindKph = 0;
+    DateTime? sunrise;
+    DateTime? sunset;
+    double? maxWindKph;
 
     Future<bool> getData() async {
         try {
