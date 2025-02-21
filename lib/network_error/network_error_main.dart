@@ -16,6 +16,7 @@ class _NetworkErrorState extends State<NetworkError> {
   void reloadButtonFunction() async{
       try {
         await get(Uri.parse("https://www.google.com"));
+        controlTimerBefore();
         Navigator.pop(context);
         backupFunction!();
       } catch(e) {
@@ -51,48 +52,51 @@ class _NetworkErrorState extends State<NetworkError> {
     // String backPathName = data["back_path_name"];
     backupFunction = data["backup_function"];
 
-    return SafeArea(
-      child: Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                "No network connection",
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: Text(
+                  "No network connection",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    decoration: TextDecoration.none
+                  ),)
+                ),
+              SizedBox(height: 80,),
+              ElevatedButton(
+                onPressed: (){
+                  // zde bude funkce pro získání, zda připojen
+                  reloadButtonFunction();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                ),
+                child: Text(
+                  "Reload",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),),
+                ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                errorText,
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+                  color: Colors.red,
+                  fontSize: 13,
                   decoration: TextDecoration.none
-                ),)
-              ),
-            SizedBox(height: 80,),
-            ElevatedButton(
-              onPressed: (){
-                // zde bude funkce pro získání, zda připojen
-                reloadButtonFunction();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-              ),
-              child: Text(
-                "Reload",
-                style: TextStyle(
-                  color: Colors.black
-                ),),
-              ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              errorText,
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 15,
-                decoration: TextDecoration.none
-              ),
-            )
-          ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

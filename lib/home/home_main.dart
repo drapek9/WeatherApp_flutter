@@ -75,12 +75,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: infLocation.isDay == 1 ? Colors.black : const Color.fromARGB(0, 255, 255, 255)
+                  backgroundColor: infLocation.isDay == 1 ? const Color.fromARGB(182, 239, 239, 239) : const Color.fromARGB(0, 255, 255, 255)
                 ),
                 child: Text(
                   "Location",
                   style: TextStyle(
-                    color: Colors.white
+                    color: infLocation.isDay == 1 ? Colors.black : Colors.white
                   ),
                 )
                 ),
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "${infLocation.temperature} °C",
+                    "${infLocation.temperature}°",
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ),
                   Text(
-                    "${infLocation.feelTemperature} °C",
+                    "${infLocation.feelTemperature}°",
                     style: TextStyle(
                       fontSize: 20,
                       color: textColor
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: infLocation.isDay == 1 ? Colors.black : const Color.fromARGB(0, 255, 255, 255)
+                      backgroundColor: infLocation.isDay == 1 ? const Color.fromARGB(182, 239, 239, 239) : const Color.fromARGB(0, 255, 255, 255)
                     ),
                     onPressed: (){
                       Navigator.pushNamed(context, "/detail", arguments: {
@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text(
                       "Detail information",
                       style: TextStyle(
-                        color: Colors.white
+                        color: infLocation.isDay == 1 ? Colors.black : Colors.white
                       ),
                     )),
                 ),
@@ -161,18 +161,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 235, 235, 235)
+                      backgroundColor: infLocation.isDay == 1 ? Colors.black : const Color.fromARGB(255, 235, 235, 235)
                     ),
                     onPressed: () async{
                       try {
-                        print("ahoj 1");
                         Location newLocation = Location(location: infLocation.location);
-                        print("ahoj 2");
-                        bool response_success = await newLocation.getData();
-                        if (!response_success){
+                        bool responseSuccess = await newLocation.getData();
+                        if (!responseSuccess){
                           throw Exception();
                         }
-                        print("ahoj 3");
                         setState(() {
                           infLocation = newLocation;
                         });
@@ -190,13 +187,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           "Refresh",
                           style: TextStyle(
-                            color: Colors.black
+                            color: infLocation.isDay == 1 ? Colors.white : Colors.black
                           ),
                           ),
                         SizedBox(width: 8,),
                         Icon(
                           Icons.refresh,
-                          color: Colors.black
+                          color: infLocation.isDay == 1 ? Colors.white : Colors.black
                           )
                       ],
                     )),

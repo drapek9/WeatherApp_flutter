@@ -38,25 +38,30 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SpinKitCircle(
-          color: Colors.white,
-          size: 25.0,
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SpinKitCircle(
+              color: Colors.black,
+              size: 25.0,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Loading",
+              style: TextStyle(
+                decoration: TextDecoration.none,
+                color: Colors.white,
+                fontSize: 14
+              ),
+            ),
+          ],
         ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          "Loading",
-          style: TextStyle(
-            decoration: TextDecoration.none,
-            color: Colors.white,
-            fontSize: 14
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
