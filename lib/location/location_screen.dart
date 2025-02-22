@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/data/data_main.dart';
+import 'package:weather_app/location/location_script.dart';
 
 class LocationScreenChooser extends StatefulWidget {
   const LocationScreenChooser({super.key});
@@ -76,6 +77,20 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
                 ),
               ),
               SizedBox(height: 15),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black
+                ),
+                onPressed: () async {
+                  Map data = await getCurrentLocation();
+                  myController.text = data["location"]["name"];
+                },
+                child: Text(
+                  "Current location",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),
+                  )),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 235, 235, 235)
