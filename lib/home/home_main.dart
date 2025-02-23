@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_app/data/data_main.dart';
 import 'package:weather_app/structure_widgets/structure_widgets_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -164,13 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     onPressed: () async{
                       try {
-                        Location newLocation = Location(location: infLocation.location);
-                        bool responseSuccess = await newLocation.getData();
+                        bool responseSuccess = await infLocation.getData();
                         if (!responseSuccess){
                           throw Exception();
                         }
                         setState(() {
-                          infLocation = newLocation;
+                          infLocation = infLocation;
                         });
                       } catch (e){
                         Navigator.pushNamed(context, "/network_error", arguments: {

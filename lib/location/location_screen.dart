@@ -47,7 +47,6 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getStartHistoryLocation();
   }
@@ -66,9 +65,8 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
         setState(() {
           optionLocation = false;
         });
+        lastLocationText = myController.text;
       }
-      lastLocationText = myController.text;
-    
       
     });
     data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
@@ -207,20 +205,40 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
                     fontWeight: FontWeight.bold
                   ),
                   )) : Text(""),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue
-                ),
-                onPressed: (){
-                  showBottomChooserHistory(context, historyLocation, changeTextFieldText);
-                },
-                child: Text(
-                  "History",
-                  style: TextStyle(
-                    color: Colors.white
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 213, 213, 213)
+                        ),
+                        onPressed: (){
+                          showBottomChooserHistory(context, historyLocation, changeTextFieldText);
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          spacing: 10,
+                          children: [
+                            Text(
+                              "History",
+                              style: TextStyle(
+                                color: Colors.black
+                              ),
+                              ),
+                            Icon(
+                              Icons.history,
+                              color: Colors.black,
+                              ),
+                          ],
+                        )
+                        ),
+                    ],
                   ),
-                  )
-                )
+                ),
+              )
             ],
           ),
         ),
@@ -230,47 +248,72 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
 }
 
 void showBottomChooserHistory (context, historyLocation, functionClicked){
+  ScrollController scrollController = ScrollController();
   showModalBottomSheet(
+    backgroundColor: const Color.fromARGB(255, 235, 235, 235),
     context: context,
     builder: (context) {
       return SizedBox(
-        height: 300,
-        child: Container(
-          color: const Color.fromARGB(255, 208, 208, 208),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: ListView.builder(
-              itemCount: historyLocation.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
-                  child: Expanded(
-                    child: Card(
-                      child: InkWell(
-                        onTap: (){
-                          functionClicked(historyLocation[index]);
-                          Navigator.pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Center(
-                            child: Text(
-                              historyLocation[index],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold
+        height: 400,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "History",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+                  ),
+                ),
+            ),
+            Divider(
+              height: 1,
+              color: const Color.fromARGB(255, 175, 175, 175),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: ListView.builder(
+                  controller: scrollController,
+                  padding: EdgeInsets.only(top: 5),
+                  itemCount: historyLocation.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+                      child: Expanded(
+                        child: Card(
+                          color: Colors.white,
+                          child: InkWell(
+                            onTap: (){
+                              functionClicked(historyLocation[index]);
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Center(
+                                child: Text(
+                                  historyLocation[index],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                  ),
                               ),
-                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+              ),
             ),
-          )
+          ],
         )
       );
+    });
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
     });
 }

@@ -5,8 +5,9 @@ class BottomInf extends StatefulWidget {
   final String topInf;
   final String bottomInf;
   final Color textColor;
-
+  
   BottomInf({required this.topInf, required this.bottomInf, required this.textColor});
+
 
   @override
   State<BottomInf> createState() => _BottomInfState();

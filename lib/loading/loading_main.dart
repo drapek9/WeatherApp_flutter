@@ -19,8 +19,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
       Map response = await getCurrentLocation();
       data = response["location"]["name"];
     }
-    
-
     Location startLocation = Location(location: data);
     bool responseSuccess = await startLocation.getData();
     if (!responseSuccess){

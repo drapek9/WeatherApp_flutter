@@ -40,10 +40,6 @@ class _DetailWeatherLocationState extends State<DetailWeatherLocation> {
     }
     
   }
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
