@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:weather_app/data/data_main.dart';
 import 'package:weather_app/location/location_script.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationScreenChooser extends StatefulWidget {
   const LocationScreenChooser({super.key});
@@ -18,6 +20,43 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
   String lastLocationText = "";
   int? isDay;
   bool waitingCurLocation = false;
+  List historyLocation = [];
+
+  void addLocationHistory(locationName) async {
+    SharedPreferences theShared = await SharedPreferences.getInstance();
+    List sharedResult = jsonDecode(theShared.getString("location_history") ?? "[]");
+    if (sharedResult.contains(locationName)){
+      sharedResult.remove(locationName);
+    }
+    sharedResult.add(locationName);
+
+    await theShared.setString("location_history", jsonEncode(sharedResult));
+
+    setState(() {
+      historyLocation = sharedResult;
+    });
+  }
+
+  void getStartHistoryLocation() async {
+    SharedPreferences theShared = await SharedPreferences.getInstance();
+    
+    setState(() {
+      historyLocation = jsonDecode(theShared.getString("location_history") ?? "[]");
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getStartHistoryLocation();
+  }
+
+  void changeTextFieldText(theValue){
+    setState(() {
+      myController.text = theValue;
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -29,7 +68,7 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
         });
       }
       lastLocationText = myController.text;
-      
+    
       
     });
     data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>;
@@ -159,6 +198,7 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
                       optionLocation = false;
                       isDay = dayReturn;
                     });
+                  addLocationHistory(myController.text);
                 },
                 child: Text(
                   "Select location",
@@ -166,11 +206,71 @@ class _LocationScreenChooserState extends State<LocationScreenChooser> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold
                   ),
-                  )) : Text("")
+                  )) : Text(""),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue
+                ),
+                onPressed: (){
+                  showBottomChooserHistory(context, historyLocation, changeTextFieldText);
+                },
+                child: Text(
+                  "History",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),
+                  )
+                )
             ],
           ),
         ),
       ),
     );
   }
+}
+
+void showBottomChooserHistory (context, historyLocation, functionClicked){
+  showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return SizedBox(
+        height: 300,
+        child: Container(
+          color: const Color.fromARGB(255, 208, 208, 208),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: ListView.builder(
+              itemCount: historyLocation.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2.5),
+                  child: Expanded(
+                    child: Card(
+                      child: InkWell(
+                        onTap: (){
+                          functionClicked(historyLocation[index]);
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Center(
+                            child: Text(
+                              historyLocation[index],
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              ),
+                              ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        )
+      );
+    });
 }
